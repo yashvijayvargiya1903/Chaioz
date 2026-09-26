@@ -1,215 +1,41 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#123f3f">
-  <meta name="description" content="Chaioz — Sip the fusion, taste the tradition. Authentic Indian chai, street food and late-night comfort in North Adelaide.">
-  <title>chaioz — Sip the fusion, taste the tradition.</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#103d39"><title>Chaioz — Premium Menu & Ordering Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="announcement">
-    <span>NEW AT CHAIOZ</span>
-    <span>Rasmalai Matcha · Rose Falooda Matcha · Blueberry Matcha</span>
-    <button data-open="launch">Explore the new pour <span>↗</span></button>
-  </div>
+<div class="topbar"><a class="brand" href="#top"><span class="brand-mark">☕</span><span>chaioz</span></a><div class="location">NORTH ADELAIDE · 132 O'CONNELL ST</div><div class="top-actions"><button id="viewCartBtn" class="cart-pill">Bag <b id="cartCount">0</b> · <span id="cartTotal">$0.00</span></button><a class="order-link" href="https://chaiozonline.com.au/" target="_blank" rel="noopener">Official ordering ↗</a></div></div>
 
-  <header class="site-header" id="top">
-    <a class="brand" href="#top" aria-label="Chaioz home">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 64 64" fill="none"><path d="M13 26h35v14c0 9-7 15-17.5 15S13 49 13 40V26Z" stroke="currentColor" stroke-width="2.8"/><path d="M48 31h4.5c5.2 0 8.5 3 8.5 7.2s-3.3 7.2-8.5 7.2H48" stroke="currentColor" stroke-width="2.8"/><path d="M22 18c-1.5-4 2-5.2.8-9M32 18c-1.5-4 2-5.2.8-9M42 18c-1.5-4 2-5.2.8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M18 60h30" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg>
-      </span>
-      <span class="brand-word">chaioz</span>
-    </a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#story">Our story</a>
-      <a href="#menu">Menu</a>
-      <a href="#new">New</a>
-      <a href="#visit">Visit</a>
-    </nav>
-    <div class="header-actions">
-      <button class="ghost-btn" data-open="menu">View menu</button>
-      <a class="solid-btn" href="https://chaiozonline.com.au/" target="_blank" rel="noopener">Order online <span>↗</span></a>
-    </div>
-    <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
-  </header>
+<main class="app" id="top">
+<aside class="sidebar">
+<div class="side-head"><span>ORDER MENU</span><small>DEMO</small></div>
+<nav id="categoryNav"></nav>
+<div class="side-note"><strong>Late-night chai.</strong><span>Pickup · Dine in · Takeaway</span></div>
+</aside>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy reveal">
-        <p class="eyebrow"><span></span> North Adelaide · O'Connell Street</p>
-        <h1>Sip the fusion.<br><em>Taste the tradition.</em></h1>
-        <p class="hero-lede">A warm little corner of India in Adelaide — slow-brewed chai, street food, sweet things and nights made for good company.</p>
-        <div class="hero-cta">
-          <button class="primary-btn" data-open="menu">Explore the menu <span>→</span></button>
-          <a class="text-link" href="#visit">Find us <span>↘</span></a>
-        </div>
-        <div class="proof-row">
-          <div><strong>4.6</strong><span class="stars">★★★★★</span><small>1,086+ Google reviews</small></div>
-          <div class="proof-divider"></div>
-          <div><strong>Late</strong><small>Open till midnight<br>Fri & Sat</small></div>
-        </div>
-      </div>
+<section class="catalog">
+<div class="catalog-head">
+<div><span class="eyebrow">CHAIOZ · NORTH ADELAIDE</span><h1>Pick your <em>moment.</em></h1><p>Everything in one place — no long scrolling. Choose a category, add your favourites, and check out from the same screen.</p></div>
+<div class="head-actions"><button id="searchBtn" class="icon-btn">⌕ Search</button><button id="clearBtn" class="icon-btn">Clear bag</button></div>
+</div>
+<div id="promo" class="promo"><div><span>NEW DROP</span><h2>Desi. But make it <em>matcha.</em></h2><p>Rasmalai Matcha · Rose Falooda Matcha · Blueberry & White Chocolate</p></div><button data-category="matcha">Shop matcha →</button></div>
+<div id="productSections"></div>
+</section>
 
-      <div class="hero-visual reveal">
-        <div class="hero-image-wrap">
-          <img src="https://eccdn.com.au/images/9B6B3C3D-36D0-4E8E-A125-E9DD8ADCDA42/9B6B3C3D-36D0-4E8E-A125-E9DD8ADCDA42_image_0_1745381599126.jpg" alt="Chaioz Indian street food spread" loading="eager">
-          <div class="image-tag"><span>01</span><span>Street food, served warm.</span></div>
-        </div>
-        <div class="floating-card">
-          <span class="mini-icon">☕</span>
-          <div><small>Signature</small><strong>Masala Chai</strong></div>
-          <span class="arrow">↗</span>
-        </div>
-      </div>
-    </section>
+<aside class="cart-panel" id="cartPanel">
+<div class="cart-head"><div><span class="eyebrow">YOUR ORDER</span><h2>Chaioz bag</h2></div><button id="closeCart" class="close-btn">×</button></div>
+<div class="order-type"><button class="type active" data-type="pickup">Pickup</button><button class="type" data-type="dinein">Dine in</button><button class="type" data-type="takeaway">Takeaway</button></div>
+<div id="cartItems" class="cart-items"><div class="empty"><span>☕</span><strong>Your bag is empty</strong><small>Add something warm, crisp or sweet.</small></div></div>
+<div class="cart-bottom"><div class="totals"><span>Subtotal</span><strong id="subtotal">$0.00</strong></div><button id="checkoutBtn" class="checkout" disabled>Continue to checkout →</button><small class="demo-note">Demo checkout — no payment is charged.</small></div>
+</aside>
+</main>
 
-    <section class="marquee" aria-label="Chaioz specialties">
-      <div class="marquee-track">
-        <span>AUTHENTIC INDIAN CHAI</span><i>✦</i><span>STREET FOOD</span><i>✦</i><span>BUN MASKA</span><i>✦</i><span>MILKCAKES</span><i>✦</i><span>LATE-NIGHT EATS</span><i>✦</i>
-        <span>AUTHENTIC INDIAN CHAI</span><i>✦</i><span>STREET FOOD</span><i>✦</i><span>BUN MASKA</span><i>✦</i><span>MILKCAKES</span><i>✦</i><span>LATE-NIGHT EATS</span><i>✦</i>
-      </div>
-    </section>
+<div class="mobile-cat"><button id="mobileCatsBtn">☰ Categories</button><button id="mobileCartBtn">Bag <b id="mobileCartCount">0</b></button></div>
 
-    <section class="intro section-pad" id="story">
-      <div class="section-label reveal">01 / The Chaioz world</div>
-      <div class="intro-grid">
-        <div class="reveal">
-          <h2>A recipe that travelled.<br><em>A place that stayed.</em></h2>
-        </div>
-        <div class="intro-copy reveal">
-          <p>Chaioz brings an Indian chai-café ritual to North Adelaide — the kind of place where the first sip slows you down and one more snack somehow becomes the plan.</p>
-          <p>The brand describes its chai as a family recipe carried from India to O'Connell Street, with hand-blended spices, slow brewing and a late-night spirit.</p>
-          <a class="underlined-link" href="#new">Discover the Chaioz way <span>↗</span></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="story-visual section-pad-top">
-      <div class="story-photo large reveal">
-        <img src="https://static.where-e.com/Australia/Chaioz_985b1027d1d686b48526691bce1d2c10.jpg" alt="Chai and toasted snacks at Chaioz" loading="lazy">
-        <span class="photo-caption">Warm chai. Crisp bites. No rush.</span>
-      </div>
-      <div class="story-side">
-        <div class="quote-card reveal">
-          <span class="quote-mark">“</span>
-          <p>Visit us.<br>Come back.<br><em>Belong.</em></p>
-          <small>The Chaioz world</small>
-        </div>
-        <div class="small-photo reveal">
-          <img src="https://eccdn.com.au/images/9B6B3C3D-36D0-4E8E-A125-E9DD8ADCDA42/9B6B3C3D-36D0-4E8E-A125-E9DD8ADCDA42_image_0_1745381599126.jpg" alt="Indian street food at Chaioz" loading="lazy">
-        </div>
-      </div>
-    </section>
-
-    <section class="new-section section-pad" id="new">
-      <div class="section-head reveal">
-        <div>
-          <div class="section-label">02 / Fresh from the counter</div>
-          <h2>A new kind of <em>matcha moment.</em></h2>
-        </div>
-        <p>Public posts from September 2026 highlight Chaioz's new fusion matcha drinks, including Rasmalai Matcha, Rose Falooda Matcha and Blueberry Matcha.</p>
-      </div>
-      <div class="new-grid">
-        <article class="new-card featured reveal">
-          <div class="new-art rasmalai"><span>R</span></div>
-          <div class="new-info"><span>NEW · FUSION</span><h3>Rasmalai Matcha</h3><p>Creamy, fragrant and unmistakably desi.</p></div>
-        </article>
-        <article class="new-card reveal">
-          <div class="new-art rose"><span>R</span></div>
-          <div class="new-info"><span>NEW · FUSION</span><h3>Rose Falooda Matcha</h3><p>A floral, playful twist on the everyday matcha.</p></div>
-        </article>
-        <article class="new-card reveal">
-          <div class="new-art blueberry"><span>B</span></div>
-          <div class="new-info"><span>NEW · FUSION</span><h3>Blueberry Matcha</h3><p>Colourful, fresh and made for the scroll.</p></div>
-        </article>
-      </div>
-      <button class="dark-pill" data-open="launch">See the launch collection <span>→</span></button>
-    </section>
-
-    <section class="menu-preview section-pad" id="menu">
-      <div class="section-label reveal">03 / The menu</div>
-      <div class="menu-heading reveal">
-        <h2>Comfort, <em>with character.</em></h2>
-        <button class="outline-btn" data-open="menu">Open full menu <span>↗</span></button>
-      </div>
-      <div class="menu-grid">
-        <article class="menu-item reveal"><span class="menu-num">01</span><div><h3>Masala Chai</h3><p>Slow-brewed Indian chai with hand-blended spices.</p></div><strong>$3.90</strong></article>
-        <article class="menu-item reveal"><span class="menu-num">02</span><div><h3>Bun Maska</h3><p>Soft bun with butter, jam or Nutella.</p></div><strong>$4.95</strong></article>
-        <article class="menu-item reveal"><span class="menu-num">03</span><div><h3>Vada Pav</h3><p>Crispy potato fritter, soft pav and chutneys.</p></div><strong>$6.95</strong></article>
-        <article class="menu-item reveal"><span class="menu-num">04</span><div><h3>Samosa Chaat</h3><p>Samosa, chutneys, yoghurt, chickpeas and herbs.</p></div><strong>$6.95</strong></article>
-        <article class="menu-item reveal"><span class="menu-num">05</span><div><h3>Paneer Bites</h3><p>Crispy cottage cheese with mint chutney.</p></div><strong>$7.95</strong></article>
-        <article class="menu-item reveal"><span class="menu-num">06</span><div><h3>Pistachio Milk Cake</h3><p>A rich, creamy sweet made for the final bite.</p></div><strong>Ask us</strong></article>
-      </div>
-    </section>
-
-    <section class="social-strip">
-      <div class="social-copy reveal">
-        <span class="section-label">04 / Around Chaioz</span>
-        <h2>Good chai is<br><em>better together.</em></h2>
-        <p>Late-night specials, open mics, workshops and the O'Connell Street regulars.</p>
-        <a class="underlined-link" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener">Follow @chaioz_aus <span>↗</span></a>
-      </div>
-      <div class="social-collage">
-        <div class="collage-one reveal"><img src="https://static.where-e.com/Australia/Chaioz_985b1027d1d686b48526691bce1d2c10.jpg" alt="Chaioz food and chai"></div>
-        <div class="collage-two reveal"><img src="https://eccdn.com.au/images/9B6B3C3D-36D0-4E8E-A125-E9DD8ADCDA42/9B6B3C3D-36D0-4E8E-A125-E9DD8ADCDA42_image_0_1745381599126.jpg" alt="Chaioz street food"></div>
-      </div>
-    </section>
-
-    <section class="visit section-pad" id="visit">
-      <div class="visit-card reveal">
-        <div class="visit-main">
-          <span class="section-label">05 / Come say chai</span>
-          <h2>See you on<br><em>O'Connell Street.</em></h2>
-          <p>Unit 2, 132 O'Connell St<br>North Adelaide SA 5006</p>
-          <div class="visit-actions">
-            <a class="primary-btn" href="https://www.google.com/maps/search/?api=1&query=Chaioz%2C%202%2F132%20O%27Connell%20St%2C%20North%20Adelaide%20SA%205006" target="_blank" rel="noopener">Get directions <span>↗</span></a>
-            <a class="text-link light" href="tel:+61870060222">08 7006 0222</a>
-          </div>
-        </div>
-        <div class="hours">
-          <div><span>MON · THU</span><strong>5pm — 11pm</strong></div>
-          <div><span>FRIDAY</span><strong>5pm — midnight</strong></div>
-          <div><span>SATURDAY</span><strong>9am — midnight</strong></div>
-          <div><span>SUNDAY</span><strong>9am — 11pm</strong></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="rewards section-pad">
-      <div class="rewards-inner reveal">
-        <div><span class="section-label">Chaioz rewards</span><h2>Every cup brings<br><em>the next one closer.</em></h2></div>
-        <p>Earn 1 point for every $1. Points can become free chai and money off, according to the current Chaioz rewards program.</p>
-        <button class="cream-btn" data-open="rewards">Join Chaioz Rewards <span>→</span></button>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="footer-top">
-      <a class="brand footer-brand" href="#top"><span class="brand-word">chaioz</span></a>
-      <p>Brewed slow.<br>Served late.<br><em>Made for connection.</em></p>
-      <div class="footer-links"><a href="#story">Story</a><a href="#menu">Menu</a><a href="#new">New</a><a href="#visit">Visit</a><a href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener">Instagram ↗</a></div>
-    </div>
-    <div class="footer-bottom"><span>© 2026 Chaioz</span><span>North Adelaide · South Australia</span><span>Concept website demo</span></div>
-  </footer>
-
-  <div class="mobile-bar">
-    <a href="#menu">Menu</a><a href="#visit">Visit</a><a class="mobile-order" href="https://chaiozonline.com.au/" target="_blank" rel="noopener">Order online</a>
-  </div>
-
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-card">
-      <button class="modal-close" data-close aria-label="Close">×</button>
-      <div id="modalContent"></div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+<div class="modal" id="modal"><div class="modal-bg"></div><div class="modal-card" id="modalCard"></div></div>
+<script src="script.js"></script>
+</body></html>
