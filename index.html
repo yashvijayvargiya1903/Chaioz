@@ -2,28 +2,109 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#103d39"><title>Chaioz — Premium Menu & Ordering Demo</title>
+<meta name="theme-color" content="#103d39"><title>Chaioz — Chai, Culture & Connection</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="topbar"><a class="brand" href="#top"><span class="brand-mark">☕</span><span>chaioz</span></a><div class="location">NORTH ADELAIDE · 132 O'CONNELL ST</div><div class="top-actions"><button id="viewCartBtn" class="cart-pill">Bag <b id="cartCount">0</b> · <span id="cartTotal">$0.00</span></button><a class="order-link" href="https://chaiozonline.com.au/" target="_blank" rel="noopener">Official ordering ↗</a></div></div>
+<div class="topbar">
+  <a class="brand" href="#home"><span class="brand-mark">☕</span><span>chaioz</span></a>
+  <div class="location">NORTH ADELAIDE · 132 O'CONNELL ST</div>
+  <div class="top-actions">
+    <a class="social-link" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener">Instagram ↗</a>
+    <button id="viewCartBtn" class="cart-pill">Bag <b id="cartCount">0</b> · <span id="cartTotal">$0.00</span></button>
+    <a class="order-link" href="https://chaiozonline.com.au/" target="_blank" rel="noopener">Order pickup ↗</a>
+  </div>
+</div>
 
 <main class="app" id="top">
 <aside class="sidebar">
-<div class="side-head"><span>ORDER MENU</span><small>DEMO</small></div>
-<nav id="categoryNav"></nav>
-<div class="side-note"><strong>Late-night chai.</strong><span>Pickup · Dine in · Takeaway</span></div>
+  <div class="side-brand"><span class="side-dot"></span><span>THE CHAIOZ WORLD</span></div>
+  <nav id="siteNav" class="site-nav">
+    <button class="site-btn active" data-page="home"><span>01</span>Home</button>
+    <button class="site-btn" data-page="story"><span>02</span>Our story</button>
+    <button class="site-btn" data-page="menu"><span>03</span>Menu</button>
+    <button class="site-btn" data-page="gallery"><span>04</span>Gallery</button>
+    <button class="site-btn" data-page="community"><span>05</span>Community</button>
+    <button class="site-btn" data-page="visit"><span>06</span>Visit us</button>
+  </nav>
+  <div class="sidebar-rule"></div>
+  <div class="side-head"><span>MENU CATEGORIES</span><small id="menuState">BROWSE</small></div>
+  <nav id="categoryNav"></nav>
+  <div class="side-note"><strong>Brewed slow.</strong><span>Served late · made for connection.</span></div>
 </aside>
 
-<section class="catalog">
-<div class="catalog-head">
-<div><span class="eyebrow">CHAIOZ · NORTH ADELAIDE</span><h1>Pick your <em>moment.</em></h1><p>Everything in one place — no long scrolling. Choose a category, add your favourites, and check out from the same screen.</p></div>
-<div class="head-actions"><button id="searchBtn" class="icon-btn">⌕ Search</button><button id="clearBtn" class="icon-btn">Clear bag</button></div>
-</div>
-<div id="promo" class="promo"><div><span>NEW DROP</span><h2>Desi. But make it <em>matcha.</em></h2><p>Rasmalai Matcha · Rose Falooda Matcha · Blueberry & White Chocolate</p></div><button data-category="matcha">Shop matcha →</button></div>
-<div id="productSections"></div>
+<section class="catalog" id="catalog">
+  <div class="page" id="page-home">
+    <div class="hero-panel">
+      <div class="hero-copy">
+        <span class="eyebrow">ADELAIDE · INDIAN CHAI CAFÉ</span>
+        <h1>Sip the fusion,<br><em>taste the tradition.</em></h1>
+        <p>Adelaide's first authentic Indian chai café — brewed slow, served warm, and made for the people who arrive when the city softens.</p>
+        <div class="hero-actions"><button class="primary" data-page="menu">Explore the menu →</button><button class="secondary" data-page="story">Our story</button></div>
+        <div class="hero-meta"><span>132 O'Connell St</span><span>North Adelaide 5006</span><span>Open late</span></div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-orb"></div><div class="hero-cup">☕</div>
+        <span class="hero-stamp">CHAIOZ<br><small>EST. ADELAIDE</small></span>
+      </div>
+    </div>
+    <div class="home-strip">
+      <div><span class="eyebrow">THE CHAIOZ WAY</span><h2>One recipe. Three generations. A whole city.</h2></div>
+      <button class="text-link" data-page="story">Read the story ↗</button>
+    </div>
+    <div class="feature-grid">
+      <article><span>01</span><h3>Hand-blended spices</h3><p>The recipe travelled from a kitchen in India to O'Connell Street.</p></article>
+      <article><span>02</span><h3>Late-night energy</h3><p>Chai, street food and sweet things for when the city softens.</p></article>
+      <article><span>03</span><h3>Made for connection</h3><p>A café world built around people, conversations and community.</p></article>
+    </div>
+  </div>
+
+  <div class="page hidden-page" id="page-story">
+    <div class="page-kicker"><span class="eyebrow">02 · OUR STORY</span><span>FROM INDIA → ADELAIDE</span></div>
+    <div class="story-layout">
+      <div><h1>Not just chai.<br><em>A place to belong.</em></h1><p class="lead">Every cup at Chaioz starts with a recipe that travelled from a kitchen in India to Adelaide's O'Connell Street — same spices, same ratio, same stubborn love for doing it slowly.</p><p>Chaioz brings Indian chai culture together with modern café energy: karak, street food, milkcakes, late-night specials and a space that keeps the door open for connection.</p><button class="primary" data-page="menu">Taste the story →</button></div>
+      <div class="story-card"><div class="story-number">3</div><span>GENERATIONS</span><strong>One family recipe</strong><small>Hand-blended · slow brewed · served late</small></div>
+    </div>
+    <div class="quote-card">“Brewed slow. Served late. Made for connection.”</div>
+  </div>
+
+  <div class="page hidden-page" id="page-menu">
+    <div class="catalog-head">
+      <div><span class="eyebrow">03 · CHAIOZ MENU · NORTH ADELAIDE</span><h1>Pick your <em>moment.</em></h1><p>From karak and masala chai to street food, matcha and milkcakes. Choose a category from the side rail and jump straight to it.</p></div>
+      <div class="head-actions"><button id="searchBtn" class="icon-btn">⌕ Search</button><button id="clearBtn" class="icon-btn">Clear bag</button></div>
+    </div>
+    <div id="promo" class="promo"><div><span>NEW DROP</span><h2>Desi. But make it <em>matcha.</em></h2><p>Pistachio Matcha · Rose Falooda Matcha · Blueberry & White Chocolate</p></div><button data-category="matcha">Shop matcha →</button></div>
+    <div id="productSections"></div>
+  </div>
+
+  <div class="page hidden-page" id="page-gallery">
+    <div class="page-kicker"><span class="eyebrow">04 · GALLERY</span><a href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener">@chaioz_aus ↗</a></div>
+    <div class="gallery-head"><div><h1>Inside the<br><em>Chaioz world.</em></h1><p>Food, people, late nights and the North Adelaide atmosphere — presented as a dedicated visual space.</p></div><a class="instagram-pill" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener">See live Instagram ↗</a></div>
+    <div class="gallery-grid">
+      <a class="gallery-tile tall g1" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener"><span>CAFE · NORTH ADELAIDE</span><strong>The room, the ritual.</strong></a>
+      <a class="gallery-tile g2" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener"><span>CHAI · STREET FOOD</span><strong>Made to share.</strong></a>
+      <a class="gallery-tile g3" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener"><span>LATE NIGHTS</span><strong>Stay for the vibe.</strong></a>
+      <a class="gallery-tile wide g4" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener"><span>FOLLOW THE MOMENTS</span><strong>More from @chaioz_aus →</strong></a>
+    </div>
+    <div class="media-note"><strong>Instagram gallery</strong><span>For the live demo, this section links directly to Chaioz's official Instagram so the café's original photos and reels remain on their source platform. Re-uploading third-party social media photos requires permission from the rights holder.</span></div>
+  </div>
+
+  <div class="page hidden-page" id="page-community">
+    <div class="page-kicker"><span class="eyebrow">05 · COMMUNITY</span><span>THE CHAIOZ CIRCLE</span></div>
+    <div class="community-hero"><span class="eyebrow">SOMEWHERE YOU BELONG</span><h1>More than a café.<br><em>A community.</em></h1><p>Late-night specials, open mics and workshops — the people and nights that make Chaioz part of O'Connell Street.</p></div>
+    <div class="community-grid"><article><span>01</span><h3>Events</h3><p>Discover open mics, workshops and special nights.</p></article><article><span>02</span><h3>Rewards</h3><p>Earn 1 point for every $1 and turn points into free chai.</p></article><article><span>03</span><h3>Share the moment</h3><p>Tag @chaioz_aus and join the Chaioz feed.</p></article></div>
+    <a class="wide-link" href="https://www.instagram.com/chaioz_aus/" target="_blank" rel="noopener">Follow Chaioz on Instagram ↗</a>
+  </div>
+
+  <div class="page hidden-page" id="page-visit">
+    <div class="page-kicker"><span class="eyebrow">06 · VISIT US</span><span>NORTH ADELAIDE</span></div>
+    <div class="visit-layout">
+      <div><h1>Come by.<br><em>Stay awhile.</em></h1><p class="lead">Unit 2, 132 O'Connell St, North Adelaide SA 5006</p><div class="visit-details"><div><span>PHONE</span><strong>(08) 7006 0222</strong></div><div><span>EMAIL</span><strong>contact@chaioz.com.au</strong></div><div><span>ORDER</span><strong>Pickup · dine in · takeaway</strong></div></div><div class="hero-actions"><a class="primary link-button" href="https://www.google.com/maps/search/?api=1&query=2%2F132%20O'Connell%20St%20North%20Adelaide%20SA%205006" target="_blank" rel="noopener">Open directions ↗</a><a class="secondary link-button" href="https://chaiozonline.com.au/" target="_blank" rel="noopener">Order pickup ↗</a></div></div>
+      <div class="map-card"><div class="map-pin">✦</div><span>132 O'CONNELL STREET</span><strong>NORTH ADELAIDE</strong><small>5006 · SOUTH AUSTRALIA</small></div>
+    </div>
+  </div>
 </section>
 
 <aside class="cart-panel" id="cartPanel">
@@ -34,15 +115,8 @@
 </aside>
 </main>
 
-<div class="category-drawer" id="categoryDrawer">
-    <div class="category-drawer-bg" id="categoryDrawerBg"></div>
-    <div class="category-drawer-card">
-      <div class="category-drawer-head"><div><span class="eyebrow">CHAIOZ MENU</span><h3>Choose a category</h3></div><button id="closeCategories" class="close-btn">×</button></div>
-      <nav id="mobileCategoryNav"></nav>
-    </div>
-  </div>
-  <div class="mobile-cat"><button id="mobileCatsBtn">☰ Categories</button><button id="mobileCartBtn">Bag <b id="mobileCartCount">0</b></button></div>
-
+<div class="category-drawer" id="categoryDrawer"><div class="category-drawer-bg" id="categoryDrawerBg"></div><div class="category-drawer-card"><div class="category-drawer-head"><div><span class="eyebrow">CHAIOZ MENU</span><h3>Explore</h3></div><button id="closeCategories" class="close-btn">×</button></div><div id="mobileSiteNav" class="site-nav mobile-site-nav"></div><div class="drawer-rule"></div><span class="drawer-label">MENU CATEGORIES</span><nav id="mobileCategoryNav"></nav></div></div>
+<div class="mobile-cat"><button id="mobileCatsBtn">☰ Explore</button><button id="mobileCartBtn">Bag <b id="mobileCartCount">0</b></button></div>
 <div class="modal" id="modal"><div class="modal-bg"></div><div class="modal-card" id="modalCard"></div></div>
 <script src="script.js"></script>
 </body></html>
