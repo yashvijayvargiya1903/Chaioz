@@ -130,11 +130,13 @@ function showPage(page, updateHash=true){
   document.getElementById('categoryDrawer').classList.remove('open');
 }
 function chooseCategory(cat){
-  showPage('menu');
+  if(!cats.some(x=>x[0]===cat)) cat='all';
+  pages.forEach(id=>document.getElementById('page-'+id).classList.toggle('hidden-page',id!=='menu'));
+  renderSiteNav('menu');
   renderProducts(cat);
-  document.getElementById('menuState').textContent=cat==='all'?'BROWSE':(cats.find(x=>x[0]===cat)||['', 'Browse'])[1].toUpperCase();
-  requestAnimationFrame(()=>catalog.scrollTo({top:0,behavior:'smooth'}));
-  requestAnimationFrame(()=>{const target=document.getElementById('sec-'+cat);if(cat!=='all'&&target)target.scrollIntoView({block:'start',behavior:'smooth'});});
+  document.getElementById('menuState').textContent=cat==='all'?'BROWSE':(cats.find(x=>x[0]===cat)||['','Browse'])[1].toUpperCase();
+  catalog.scrollTop=0;
+  history.replaceState(null,'','#menu');
   document.getElementById('categoryDrawer').classList.remove('open');
 }
 function bindPageButtons(root=document){
