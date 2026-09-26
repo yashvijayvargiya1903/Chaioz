@@ -97,7 +97,7 @@ function categoryMarkup(active='all'){return cats.map(([id,label])=>'<button cla
 function renderNav(active='all'){const markup=categoryMarkup(active);nav.innerHTML=markup;const mobile=document.getElementById('mobileCategoryNav');if(mobile)mobile.innerHTML=markup}
 function renderProducts(filter='all'){renderNav(filter);const groups=filter==='all'?cats.slice(1):cats.filter(c=>c[0]===filter);sections.innerHTML=groups.map(([id,label])=>{const ps=products.filter(p=>p[0]===id);if(!ps.length)return '';return '<section class="section" id="sec-'+id+'"><div class="section-title"><h2>'+label+'</h2><span>'+ps.length+' items</span></div><div class="products">'+ps.map((p,i)=>card(p,i)).join('')+'</div></section>'}).join('');sections.querySelectorAll('.add').forEach(b=>b.onclick=()=>addItem(b.dataset.name))}
 
-function card(p,i){const [id,cat,name,price,badge,desc]=p;return '<article class="product"><div class="product-img"><img loading="lazy" src="'+IMG(name)+'" alt="'+esc(name)+'">'+(badge?'<span class="badge">'+esc(badge)+'</span>':'')+'</div><div class="product-body"><h3 class="product-name">'+esc(name)+'</h3><p class="product-desc">'+esc(desc)+'</p><div class="product-foot"><span class="price">'+price+'</span><button class="add" data-name="'+esc(name)+'">+</button></div></div></article>'}
+function card(p,i){const [id,cat,name,price,badge,desc]=p;return '<article class="product"><div class="product-img"><img loading="lazy" src="'+IMG(name,id)+'" alt="'+esc(name)+'" onerror="this.onerror=null;this.src=FALLBACK(this.alt,'+JSON.stringify(id)+')">'+(badge?'<span class="badge">'+esc(badge)+'</span>':'')+'</div><div class="product-body"><h3 class="product-name">'+esc(name)+'</h3><p class="product-desc">'+esc(desc)+'</p><div class="product-foot"><span class="price">'+price+'</span><button class="add" data-name="'+esc(name)+'">+</button></div></div></article>'}
 function addItem(name){const p=products.find(x=>x[2]===name);if(!p)return;const found=cart.find(x=>x.name===name);if(found)found.qty++;else cart.push({name,qty:1,price:num(p),image:IMG(name,p[0]),cat:p[0]});save();openCart();}
 function save(){localStorage.setItem('chaioz-demo-cart',JSON.stringify(cart));renderCart();}
 function change(name,delta){const x=cart.find(i=>i.name===name);if(!x)return;x.qty+=delta;if(x.qty<=0)cart.splice(cart.indexOf(x),1);save();}
@@ -106,15 +106,53 @@ function openCart(){document.getElementById('cartPanel').classList.add('open')}
 function closeCart(){document.getElementById('cartPanel').classList.remove('open')}
 function checkout(){const total=cart.reduce((a,b)=>a+b.qty*b.price,0);document.getElementById('modalCard').innerHTML='<button class="modal-close" onclick="closeModal()">×</button><span class="eyebrow">CHECKOUT · '+orderType.toUpperCase()+'</span><h2>Make it yours.</h2><form class="form" id="checkoutForm"><label>Name<input required id="custName" placeholder="Your name"></label><label>Mobile<input required id="custPhone" inputmode="tel" placeholder="04xx xxx xxx"></label><label>When<select id="when"><option>ASAP · 15–25 min</option><option>In 30 minutes</option><option>In 45 minutes</option></select></label><label>Notes<textarea id="notes" placeholder="Allergies, table note, special request…"></textarea></label><div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px"><b>Order total</b><b>'+money(total)+'</b></div><button class="confirm">Place demo order →</button></form>';document.getElementById('modal').classList.add('open');document.getElementById('checkoutForm').onsubmit=e=>{e.preventDefault();const id='CHZ-'+Math.floor(100000+Math.random()*899999);document.getElementById('modalCard').innerHTML='<div class="success"><div class="check">✓</div><span class="eyebrow">ORDER RECEIVED</span><h2>Chai is on the way.</h2><div class="order-id">'+id+'</div><p>Demo order confirmed for <b>'+esc(document.getElementById('custName').value)+'</b>.<br>'+esc(orderType)+' · '+money(total)+'</p><button class="confirm" onclick="closeModal()">Back to menu</button></div>';cart.length=0;save();}};
 function closeModal(){document.getElementById('modal').classList.remove('open');}
-function chooseCategory(cat){renderProducts(cat);document.getElementById('categoryDrawer').classList.remove('open')}
+const catalog=document.getElementById('catalog');
+const pages=['home','story','menu','gallery','community','visit'];
+const siteNav=document.getElementById('siteNav');
+const mobileSiteNav=document.getElementById('mobileSiteNav');
+
+function renderSiteNav(active='home'){
+  const markup=['home','story','menu','gallery','community','visit'].map((id,i)=>{
+    const labels={home:'Home',story:'Our story',menu:'Menu',gallery:'Gallery',community:'Community',visit:'Visit us'};
+    return '<button class="site-btn '+(active===id?'active':'')+'" data-page="'+id+'"><span>0'+(i+1)+'</span>'+labels[id]+'</button>';
+  }).join('');
+  siteNav.innerHTML=markup;
+  mobileSiteNav.innerHTML=markup;
+}
+function showPage(page, updateHash=true){
+  if(!pages.includes(page)) page='home';
+  pages.forEach(id=>document.getElementById('page-'+id).classList.toggle('hidden-page',id!==page));
+  renderSiteNav(page);
+  if(page==='menu'){renderProducts('all');document.getElementById('menuState').textContent='BROWSE';}
+  else {document.getElementById('menuState').textContent='EXPLORE';}
+  catalog.scrollTo({top:0,behavior:'smooth'});
+  if(updateHash) history.replaceState(null,'','#'+page);
+  document.getElementById('categoryDrawer').classList.remove('open');
+}
+function chooseCategory(cat){
+  showPage('menu');
+  renderProducts(cat);
+  document.getElementById('menuState').textContent=cat==='all'?'BROWSE':(cats.find(x=>x[0]===cat)||['', 'Browse'])[1].toUpperCase();
+  requestAnimationFrame(()=>catalog.scrollTo({top:0,behavior:'smooth'}));
+  requestAnimationFrame(()=>{const target=document.getElementById('sec-'+cat);if(cat!=='all'&&target)target.scrollIntoView({block:'start',behavior:'smooth'});});
+  document.getElementById('categoryDrawer').classList.remove('open');
+}
+function bindPageButtons(root=document){
+  root.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+}
 nav.onclick=e=>{const b=e.target.closest('.cat-btn');if(b)chooseCategory(b.dataset.cat)};
 document.getElementById('mobileCategoryNav').onclick=e=>{const b=e.target.closest('.cat-btn');if(b)chooseCategory(b.dataset.cat)};
+siteNav.onclick=e=>{const b=e.target.closest('[data-page]');if(b)showPage(b.dataset.page)};
+mobileSiteNav.onclick=e=>{const b=e.target.closest('[data-page]');if(b)showPage(b.dataset.page)};
+bindPageButtons();
 document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>chooseCategory(b.dataset.category));
 document.getElementById('mobileCatsBtn').onclick=()=>document.getElementById('categoryDrawer').classList.add('open');
 document.getElementById('closeCategories').onclick=()=>document.getElementById('categoryDrawer').classList.remove('open');
 document.getElementById('categoryDrawerBg').onclick=()=>document.getElementById('categoryDrawer').classList.remove('open');
+window.addEventListener('hashchange',()=>showPage((location.hash||'#home').slice(1),false));
+
 document.getElementById('viewCartBtn').onclick=openCart;document.getElementById('mobileCartBtn').onclick=openCart;document.getElementById('closeCart').onclick=closeCart;document.getElementById('checkoutBtn').onclick=checkout;
 document.querySelectorAll('.type').forEach(b=>b.onclick=()=>{document.querySelectorAll('.type').forEach(x=>x.classList.remove('active'));b.classList.add('active');orderType=b.dataset.type});
 document.getElementById('clearBtn').onclick=()=>{cart.length=0;save()};
 document.getElementById('searchBtn').onclick=()=>{const q=prompt('Search Chaioz menu');if(!q)return;const hit=products.filter(p=>(p[2]+' '+p[5]).toLowerCase().includes(q.toLowerCase()));sections.innerHTML='<section class="section"><div class="section-title"><h2>Search results</h2><span>'+hit.length+' items</span></div><div class="products">'+hit.map((p,i)=>card(p,i)).join('')+'</div></section>';sections.querySelectorAll('.add').forEach(b=>b.onclick=()=>addItem(b.dataset.name))};
-renderProducts();renderCart();
+renderSiteNav((location.hash||'#home').slice(1));showPage((location.hash||'#home').slice(1),false);renderCart();
