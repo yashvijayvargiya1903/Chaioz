@@ -1,4 +1,29 @@
-const IMG=(q)=>'https://image.pollinations.ai/prompt/'+encodeURIComponent('premium photorealistic Indian cafe food photography, Chaioz North Adelaide, '+q+', warm cinematic editorial lighting, dark teal and cream palette, appetizing, clean premium restaurant advertising, no text, no logo')+'?width=600&height=420&nologo=true&seed='+encodeURIComponent(q);
+const VISUALS={
+  hot:'a beautiful ceramic cup of Indian chai, rich amber tea, visible steam, elegant café presentation',
+  cold:'a premium chilled Indian café drink in a tall clear glass, ice cubes, creamy or colourful layers',
+  coolers:'a sparkling fruit cooler in a tall elegant glass, ice, fresh fruit garnish and condensation',
+  mocktails:'a sophisticated Indian-inspired mocktail in a tall premium glass, ice, mint and fresh fruit garnish',
+  matcha:'a premium matcha latte in a clear glass or ceramic cup, smooth layered green matcha, elegant garnish',
+  bowl:'a premium Indian Bombay bowl photographed from a three-quarter overhead angle, rice or chips, curry, salad and chutney',
+  toastie:'a golden toasted Bombay sandwich, crisp bread, melted filling, cut open to show the centre',
+  wrap:'a premium Indian street-food wrap cut diagonally, visible filling, fresh salad and chutney',
+  street:'an appetizing Indian street-food platter, crispy textures, chutneys and café-style presentation',
+  puff:'a golden flaky Indian puff pastry on a ceramic plate, crisp layers and visible savoury filling',
+  sweet:'an elegant Indian milk-based dessert on a premium ceramic dessert plate, creamy texture and garnish',
+  bites:'a premium Indian chai-time snack beside a warm cup of tea, bakery-style café presentation'
+};
+const imgSeed=q=>q.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+const IMG=(name,id='hot')=>{
+  const prompt='premium photorealistic food photography for Chaioz North Adelaide, '+(VISUALS[id]||VISUALS.hot)+', specifically '+name+', warm cinematic editorial lighting, dark teal and cream luxury café palette, natural realistic food texture, appetizing, centered composition, premium restaurant advertising photograph, no text, no logo, no people';
+  return 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=700&height=500&nologo=true&seed='+encodeURIComponent(imgSeed(name));
+};
+const FALLBACK=(name,id='hot')=>{
+  const icon={hot:'☕',cold:'🥤',coolers:'✧',mocktails:'✦',matcha:'🍵',bowl:'◉',toastie:'▣',wrap:'◌',street:'◆',puff:'◇',sweet:'✦',bites:'◒'}[id]||'☕';
+  const safe=String(name).replace(/[&<>]/g,'');
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 500"><rect width="700" height="500" fill="#ead8c0"/><circle cx="350" cy="235" r="125" fill="#f7f1e7"/><text x="350" y="255" text-anchor="middle" font-size="92">'+icon+'</text><text x="350" y="410" text-anchor="middle" font-family="Georgia" font-size="25" fill="#103d39">'+safe+'</text></svg>';
+  return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg);
+};
+const imageTag=(name,id,alt=name)=>'<img loading="lazy" decoding="async" src="'+IMG(name,id)+'" alt="'+esc(alt)+'" onerror="this.onerror=null;this.src=FALLBACK(this.alt,'+JSON.stringify(id)+')">';
 const products=[
 ['hot','Hot Drinks','Karak Classic','$4.95','Customer Favourite','World famous traditional chai, freshly brewed with Chaioz spices.'],
 ['hot','Hot Drinks','Kesar Chai','$5.95','','Saffron-infused chai with a rich, fragrant finish.'],
@@ -64,23 +89,30 @@ const cats=[
 ['all','All items'],['hot','Hot drinks'],['cold','Cold drinks'],['coolers','Coolers'],['mocktails','Mocktails'],['matcha','Matcha'],['bowl','Bombay bowls'],['toastie','Toasties'],['wrap','Wraps'],['street','Street food'],['puff','Puff patties'],['sweet','Sweet things'],['bites','Chai bites']
 ];
 const nav=document.getElementById('categoryNav'), sections=document.getElementById('productSections');
-const cart=JSON.parse(localStorage.getItem('chaioz-demo-cart')||'[]'); let orderType='pickup';
+const cart=JSON.parse(localStorage.getItem('chaioz-demo-cart')||'[]');cart.forEach(x=>{if(!x.cat){const p=products.find(y=>y[2]===x.name);if(p)x.cat=p[0]}});let orderType='pickup';
 const money=v=>'$'+v.toFixed(2);
 const num=p=>parseFloat(p[3].replace('$',''));
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function renderNav(active='all'){nav.innerHTML=cats.map(([id,label])=>'<button class="cat-btn '+(active===id?'active':'')+'" data-cat="'+id+'"><span>'+({all:'✦',hot:'☕',cold:'◐',coolers:'✧',mocktails:'◉',matcha:'✿',bowl:'◫',toastie:'▣',wrap:'◌',street:'◆',puff:'◇',sweet:'✦',bites:'◒'}[id])+'</span>'+label+'<span class="count">'+(id==='all'?products.length:products.filter(p=>p[0]===id).length)+'</span></button>').join('')}
-function renderProducts(filter='all'){renderNav(filter); const groups=filter==='all'?cats.slice(1):cats.filter(c=>c[0]===filter); sections.innerHTML=groups.map(([id,label])=>{const ps=products.filter(p=>p[0]===id);if(!ps.length)return '';return '<section class="section" id="sec-'+id+'"><div class="section-title"><h2>'+label+'</h2><span>'+ps.length+' items</span></div><div class="products">'+ps.map((p,i)=>card(p,i)).join('')+'</div></section>'}).join('');sections.querySelectorAll('.add').forEach(b=>b.onclick=()=>addItem(b.dataset.name));}
+function categoryMarkup(active='all'){return cats.map(([id,label])=>'<button class="cat-btn '+(active===id?'active':'')+'" data-cat="'+id+'"><span>'+({all:'✦',hot:'☕',cold:'◐',coolers:'✧',mocktails:'◉',matcha:'✿',bowl:'◫',toastie:'▣',wrap:'◌',street:'◆',puff:'◇',sweet:'✦',bites:'◒'}[id])+'</span>'+label+'<span class="count">'+(id==='all'?products.length:products.filter(p=>p[0]===id).length)+'</span></button>').join('')}
+function renderNav(active='all'){const markup=categoryMarkup(active);nav.innerHTML=markup;const mobile=document.getElementById('mobileCategoryNav');if(mobile)mobile.innerHTML=markup}
+function renderProducts(filter='all'){renderNav(filter);const groups=filter==='all'?cats.slice(1):cats.filter(c=>c[0]===filter);sections.innerHTML=groups.map(([id,label])=>{const ps=products.filter(p=>p[0]===id);if(!ps.length)return '';return '<section class="section" id="sec-'+id+'"><div class="section-title"><h2>'+label+'</h2><span>'+ps.length+' items</span></div><div class="products">'+ps.map((p,i)=>card(p,i)).join('')+'</div></section>'}).join('');sections.querySelectorAll('.add').forEach(b=>b.onclick=()=>addItem(b.dataset.name))}
+
 function card(p,i){const [id,cat,name,price,badge,desc]=p;return '<article class="product"><div class="product-img"><img loading="lazy" src="'+IMG(name)+'" alt="'+esc(name)+'">'+(badge?'<span class="badge">'+esc(badge)+'</span>':'')+'</div><div class="product-body"><h3 class="product-name">'+esc(name)+'</h3><p class="product-desc">'+esc(desc)+'</p><div class="product-foot"><span class="price">'+price+'</span><button class="add" data-name="'+esc(name)+'">+</button></div></div></article>'}
-function addItem(name){const p=products.find(x=>x[2]===name);if(!p)return;const found=cart.find(x=>x.name===name);if(found)found.qty++;else cart.push({name,qty:1,price:num(p),image:IMG(name)});save();openCart();}
+function addItem(name){const p=products.find(x=>x[2]===name);if(!p)return;const found=cart.find(x=>x.name===name);if(found)found.qty++;else cart.push({name,qty:1,price:num(p),image:IMG(name,p[0]),cat:p[0]});save();openCart();}
 function save(){localStorage.setItem('chaioz-demo-cart',JSON.stringify(cart));renderCart();}
 function change(name,delta){const x=cart.find(i=>i.name===name);if(!x)return;x.qty+=delta;if(x.qty<=0)cart.splice(cart.indexOf(x),1);save();}
-function renderCart(){const count=cart.reduce((a,b)=>a+b.qty,0),total=cart.reduce((a,b)=>a+b.qty*b.price,0);document.getElementById('cartCount').textContent=count;document.getElementById('mobileCartCount').textContent=count;document.getElementById('cartTotal').textContent=money(total);document.getElementById('subtotal').textContent=money(total);document.getElementById('checkoutBtn').disabled=!count;const box=document.getElementById('cartItems');box.innerHTML=count?cart.map(x=>'<div class="cart-row"><div class="cart-thumb"><img src="'+x.image+'" alt=""></div><div><div class="cart-name">'+esc(x.name)+'</div><div class="cart-meta">'+money(x.price)+' each</div><div class="qty"><button data-minus="'+esc(x.name)+'">−</button><span>'+x.qty+'</span><button data-plus="'+esc(x.name)+'">+</button></div></div><div class="row-price">'+money(x.price*x.qty)+'</div></div>').join(''):'<div class="empty"><span>☕</span><strong>Your bag is empty</strong><small>Add something warm, crisp or sweet.</small></div>';box.querySelectorAll('[data-minus]').forEach(b=>b.onclick=()=>change(b.dataset.minus,-1));box.querySelectorAll('[data-plus]').forEach(b=>b.onclick=()=>change(b.dataset.plus,1));}
+function renderCart(){const count=cart.reduce((a,b)=>a+b.qty,0),total=cart.reduce((a,b)=>a+b.qty*b.price,0);document.getElementById('cartCount').textContent=count;document.getElementById('mobileCartCount').textContent=count;document.getElementById('cartTotal').textContent=money(total);document.getElementById('subtotal').textContent=money(total);document.getElementById('checkoutBtn').disabled=!count;const box=document.getElementById('cartItems');box.innerHTML=count?cart.map(x=>'<div class="cart-row"><div class="cart-thumb"><img loading="lazy" src="'+x.image+'" alt="'+esc(x.name)+'" onerror="this.onerror=null;this.src=FALLBACK(this.alt,'+JSON.stringify(x.cat||'hot')+')"></div><div><div class="cart-name">'+esc(x.name)+'</div><div class="cart-meta">'+money(x.price)+' each</div><div class="qty"><button data-minus="'+esc(x.name)+'">−</button><span>'+x.qty+'</span><button data-plus="'+esc(x.name)+'">+</button></div></div><div class="row-price">'+money(x.price*x.qty)+'</div></div>').join(''):'<div class="empty"><span>☕</span><strong>Your bag is empty</strong><small>Add something warm, crisp or sweet.</small></div>';box.querySelectorAll('[data-minus]').forEach(b=>b.onclick=()=>change(b.dataset.minus,-1));box.querySelectorAll('[data-plus]').forEach(b=>b.onclick=()=>change(b.dataset.plus,1));}
 function openCart(){document.getElementById('cartPanel').classList.add('open')}
 function closeCart(){document.getElementById('cartPanel').classList.remove('open')}
 function checkout(){const total=cart.reduce((a,b)=>a+b.qty*b.price,0);document.getElementById('modalCard').innerHTML='<button class="modal-close" onclick="closeModal()">×</button><span class="eyebrow">CHECKOUT · '+orderType.toUpperCase()+'</span><h2>Make it yours.</h2><form class="form" id="checkoutForm"><label>Name<input required id="custName" placeholder="Your name"></label><label>Mobile<input required id="custPhone" inputmode="tel" placeholder="04xx xxx xxx"></label><label>When<select id="when"><option>ASAP · 15–25 min</option><option>In 30 minutes</option><option>In 45 minutes</option></select></label><label>Notes<textarea id="notes" placeholder="Allergies, table note, special request…"></textarea></label><div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px"><b>Order total</b><b>'+money(total)+'</b></div><button class="confirm">Place demo order →</button></form>';document.getElementById('modal').classList.add('open');document.getElementById('checkoutForm').onsubmit=e=>{e.preventDefault();const id='CHZ-'+Math.floor(100000+Math.random()*899999);document.getElementById('modalCard').innerHTML='<div class="success"><div class="check">✓</div><span class="eyebrow">ORDER RECEIVED</span><h2>Chai is on the way.</h2><div class="order-id">'+id+'</div><p>Demo order confirmed for <b>'+esc(document.getElementById('custName').value)+'</b>.<br>'+esc(orderType)+' · '+money(total)+'</p><button class="confirm" onclick="closeModal()">Back to menu</button></div>';cart.length=0;save();}};
 function closeModal(){document.getElementById('modal').classList.remove('open');}
-nav.onclick=e=>{const b=e.target.closest('.cat-btn');if(b)renderProducts(b.dataset.cat)};
-document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>renderProducts(b.dataset.category));
+function chooseCategory(cat){renderProducts(cat);document.getElementById('categoryDrawer').classList.remove('open')}
+nav.onclick=e=>{const b=e.target.closest('.cat-btn');if(b)chooseCategory(b.dataset.cat)};
+document.getElementById('mobileCategoryNav').onclick=e=>{const b=e.target.closest('.cat-btn');if(b)chooseCategory(b.dataset.cat)};
+document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>chooseCategory(b.dataset.category));
+document.getElementById('mobileCatsBtn').onclick=()=>document.getElementById('categoryDrawer').classList.add('open');
+document.getElementById('closeCategories').onclick=()=>document.getElementById('categoryDrawer').classList.remove('open');
+document.getElementById('categoryDrawerBg').onclick=()=>document.getElementById('categoryDrawer').classList.remove('open');
 document.getElementById('viewCartBtn').onclick=openCart;document.getElementById('mobileCartBtn').onclick=openCart;document.getElementById('closeCart').onclick=closeCart;document.getElementById('checkoutBtn').onclick=checkout;
 document.querySelectorAll('.type').forEach(b=>b.onclick=()=>{document.querySelectorAll('.type').forEach(x=>x.classList.remove('active'));b.classList.add('active');orderType=b.dataset.type});
 document.getElementById('clearBtn').onclick=()=>{cart.length=0;save()};
