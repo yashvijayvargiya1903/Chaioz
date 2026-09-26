@@ -34,7 +34,14 @@
 </aside>
 </main>
 
-<div class="mobile-cat"><button id="mobileCatsBtn">☰ Categories</button><button id="mobileCartBtn">Bag <b id="mobileCartCount">0</b></button></div>
+<div class="category-drawer" id="categoryDrawer">
+    <div class="category-drawer-bg" id="categoryDrawerBg"></div>
+    <div class="category-drawer-card">
+      <div class="category-drawer-head"><div><span class="eyebrow">CHAIOZ MENU</span><h3>Choose a category</h3></div><button id="closeCategories" class="close-btn">×</button></div>
+      <nav id="mobileCategoryNav"></nav>
+    </div>
+  </div>
+  <div class="mobile-cat"><button id="mobileCatsBtn">☰ Categories</button><button id="mobileCartBtn">Bag <b id="mobileCartCount">0</b></button></div>
 
 <div class="modal" id="modal"><div class="modal-bg"></div><div class="modal-card" id="modalCard"></div></div>
 <script src="script.js"></script>
